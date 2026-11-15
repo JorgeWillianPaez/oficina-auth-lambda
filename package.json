@@ -1,0 +1,52 @@
+{
+  "name": "oficina-auth-lambda",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "esbuild src/handler.ts --bundle --platform=node --target=node22 --outfile=dist/handler.js",
+    "build:local": "esbuild src/local-server.ts --bundle --platform=node --target=node22 --outfile=dist/local-server.js",
+    "package": "npm run build && cd dist && bestzip ../function.zip handler.js",
+    "start:local": "npm run build:local && node dist/local-server.js",
+    "lint": "eslint \"{src,test}/**/*.ts\"",
+    "test": "jest",
+    "test:cov": "jest --coverage"
+  },
+  "dependencies": {
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.15.0",
+    "@types/aws-lambda": "^8.10.145",
+    "@types/jest": "^29.5.14",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.0",
+    "@types/pg": "^8.11.10",
+    "bestzip": "^2.2.1",
+    "esbuild": "^0.24.0",
+    "eslint": "^9.15.0",
+    "jest": "^29.7.0",
+    "ts-jest": "^29.2.5",
+    "typescript": "~5.7.2",
+    "typescript-eslint": "^8.15.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testRegex": "test/.*\\.spec\\.ts$",
+    "collectCoverageFrom": [
+      "src/authenticate-customer.ts",
+      "src/cpf.ts",
+      "src/handler.ts"
+    ],
+    "coverageReporters": [
+      "text-summary",
+      "lcov"
+    ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 80
+      }
+    }
+  }
+}
